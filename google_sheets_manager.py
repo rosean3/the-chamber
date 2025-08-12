@@ -4,6 +4,7 @@ Gerenciador para operações com Google Sheets
 
 import os
 import json
+import streamlit as st
 from google.oauth2.service_account import Credentials
 from googleapiclient.discovery import build
 from google_sheets_config import SCOPES, SPREADSHEET_ID, RANGE_NAME, CREDENTIALS_FILE
@@ -17,20 +18,76 @@ class GoogleSheetsManager:
     def _authenticate(self):
         """Autentica com a API do Google usando credenciais de conta de serviço"""
         try:
+            # Primeiro, tenta usar credenciais do Streamlit (para deploy)
+            if self._authenticate_from_streamlit():
+                return True
+            
+            # Se não funcionar, tenta usar arquivo local (para desenvolvimento)
+            if self._authenticate_from_file():
+                return True
+            
+            print("❌ Não foi possível autenticar com Google Sheets")
+            print("   Verifique as configurações do Streamlit ou o arquivo de credenciais local")
+            return False
+            
+        except Exception as e:
+            print(f"❌ Erro na autenticação: {e}")
+            return False
+    
+    def _authenticate_from_streamlit(self):
+        """Tenta autenticar usando secrets do Streamlit (para deploy)"""
+        try:
+            # Verifica se estamos rodando no Streamlit
+            if hasattr(st, 'secrets'):
+                # Tenta obter credenciais dos secrets do Streamlit
+                if 'GOOGLE_CREDENTIALS' in st.secrets:
+                    creds_json = st.secrets['GOOGLE_CREDENTIALS']
+                    if isinstance(creds_json, str):
+                        creds_dict = json.loads(creds_json)
+                    else:
+                        creds_dict = creds_json
+                    
+                    self.credentials = Credentials.from_service_account_info(
+                        creds_dict, scopes=SCOPES
+                    )
+                    self.service = build('sheets', 'v4', credentials=self.credentials)
+                    print("✅ Autenticação com Google Sheets via Streamlit realizada com sucesso!")
+                    return True
+                
+                # Tenta obter credenciais de variáveis de ambiente
+                elif 'GOOGLE_CREDENTIALS' in os.environ:
+                    creds_json = os.environ['GOOGLE_CREDENTIALS']
+                    creds_dict = json.loads(creds_json)
+                    
+                    self.credentials = Credentials.from_service_account_info(
+                        creds_dict, scopes=SCOPES
+                    )
+                    self.service = build('sheets', 'v4', credentials=self.credentials)
+                    print("✅ Autenticação com Google Sheets via variáveis de ambiente realizada com sucesso!")
+                    return True
+            
+            return False
+            
+        except Exception as e:
+            print(f"⚠️  Falha na autenticação via Streamlit: {e}")
+            return False
+    
+    def _authenticate_from_file(self):
+        """Tenta autenticar usando arquivo local (para desenvolvimento)"""
+        try:
             if not os.path.exists(CREDENTIALS_FILE):
                 print(f"⚠️  Arquivo de credenciais '{CREDENTIALS_FILE}' não encontrado!")
-                print("   Por favor, configure as credenciais conforme instruções em 'google_sheets_config.py'")
                 return False
             
             self.credentials = Credentials.from_service_account_file(
                 CREDENTIALS_FILE, scopes=SCOPES
             )
             self.service = build('sheets', 'v4', credentials=self.credentials)
-            print("✅ Autenticação com Google Sheets realizada com sucesso!")
+            print("✅ Autenticação com Google Sheets via arquivo local realizada com sucesso!")
             return True
             
         except Exception as e:
-            print(f"❌ Erro na autenticação: {e}")
+            print(f"⚠️  Falha na autenticação via arquivo local: {e}")
             return False
     
     def append_data(self, data_rows):
