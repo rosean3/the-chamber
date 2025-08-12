@@ -1071,6 +1071,10 @@ def voting_screen():
     case = case_pool[st.session_state.current_case_index]
     round_num = st.session_state.round_num
     
+    # Initialize start time for this round if not already set
+    if f'round_{round_num}_start_time' not in st.session_state:
+        st.session_state[f'round_{round_num}_start_time'] = time.time()
+    
     st.markdown(f"<h2>RODADA {round_num} DE {MAX_ROUNDS}</h2>", unsafe_allow_html=True)
     
     # Show selected version
@@ -1093,6 +1097,10 @@ def voting_screen():
     
     st.markdown("---")
     
+    # Debug: Show current elapsed time (optional - can be removed in production)
+    if f'round_{round_num}_start_time' in st.session_state:
+        elapsed_time = round(time.time() - st.session_state[f'round_{round_num}_start_time'], 2)
+    
     col1, col2 = st.columns(2)
     
     with col1:
@@ -1108,18 +1116,27 @@ def voting_screen():
         st.markdown('</div>', unsafe_allow_html=True)
 
 def record_vote(decision):
-    start_time = time.time()
+    # Calculate decision time using the stored start time for this round
+    round_num = st.session_state.round_num
+    start_time = st.session_state.get(f'round_{round_num}_start_time', time.time())
     decision_time = round(time.time() - start_time, 2)
     
     case_pool = get_case_pool_by_version(st.session_state.selected_version)
     case = case_pool[st.session_state.current_case_index]
-    round_num = st.session_state.round_num
     
     mudanca_voto = 0
     if round_num > 1 and decision != st.session_state.player_votes_history[-1]:
         mudanca_voto = 1
     
     st.session_state.player_votes_history.append(decision)
+    
+    # Verifica se já existe um registro para esta rodada específica
+    existing_record = next((d for d in st.session_state.all_collected_data 
+                           if d['Num_Rodada'] == round_num and d['ID_Caso'] == case['id']), None)
+    
+    if existing_record:
+        st.error(f"⚠️ ATENÇÃO: Já existe um registro para Rodada {round_num} do Caso {case['id']}. Dados duplicados detectados!")
+        return
     
     data_row = {
         "ID_Sessao": st.session_state.user_session_id,
@@ -1140,6 +1157,9 @@ def record_vote(decision):
     }
     
     st.session_state.all_collected_data.append(data_row)
+    
+    # Debug: Mostrar dados coletados (pode ser removido em produção)
+    st.info(f"📊 Dados registrados para Rodada {round_num}: {len([d for d in st.session_state.all_collected_data if d['Num_Rodada'] == round_num and d['ID_Caso'] == case['id']])} registros")
     
     if round_num < MAX_ROUNDS:
         st.session_state.round_num += 1
@@ -1177,6 +1197,14 @@ def final_revelation_screen():
             st.session_state.current_case_index += 1
             st.session_state.round_num = 1
             st.session_state.player_votes_history = []
+            # Clear round start times for the new case
+            for i in range(1, MAX_ROUNDS + 1):
+                if f'round_{i}_start_time' in st.session_state:
+                    del st.session_state[f'round_{i}_start_time']
+            # Clear case saved flag for the new case
+            current_case_id = get_case_pool_by_version(st.session_state.selected_version)[st.session_state.current_case_index]['id']
+            if f'case_{current_case_id}_saved' in st.session_state:
+                del st.session_state[f'case_{current_case_id}_saved']
             st.session_state.game_state = 'voting'
             st.rerun()
     else:
@@ -1207,6 +1235,14 @@ def game_complete_screen():
         st.session_state.round_num = 1
         st.session_state.all_collected_data = []
         st.session_state.player_votes_history = []
+        # Clear all round start times
+        for i in range(1, MAX_ROUNDS + 1):
+            if f'round_{i}_start_time' in st.session_state:
+                del st.session_state[f'round_{i}_start_time']
+        # Clear all case saved flags
+        for i in range(1, 21):  # Assuming max 20 cases
+            if f'case_{i}_saved' in st.session_state:
+                del st.session_state[f'case_{i}_saved']
         st.rerun()
 
 def save_case_data():
@@ -1216,6 +1252,10 @@ def save_case_data():
     case_data = [row for row in st.session_state.all_collected_data if row['ID_Caso'] == current_case_id]
     
     if not case_data:
+        return
+    
+    # Verifica se já foi salvo para evitar duplicação
+    if f'case_{current_case_id}_saved' in st.session_state:
         return
     
     # Try to save to Google Sheets based on selected version
@@ -1233,6 +1273,8 @@ def save_case_data():
             
             if sheets_manager.service and sheets_manager.append_data(case_data):
                 st.success(f"📊 Dados do Caso #{current_case_id} enviados para {manager_name}!")
+                # Marca como salvo para evitar duplicação
+                st.session_state[f'case_{current_case_id}_saved'] = True
             else:
                 st.error(f"❌ Falha ao enviar dados do Caso #{current_case_id} para {manager_name}.")
         except Exception as e:
