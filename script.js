@@ -332,7 +332,17 @@ class GoogleSheetsManager {
 
     async loadCredentialsFromFile() {
         try {
-            // Carrega o arquivo credentials.json
+            // Em produção (Render), não temos credentials.json no frontend
+            // O backend gerencia as credenciais
+            if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+                console.log('☁️ Ambiente de produção detectado, usando backend para Google Sheets');
+                this.spreadsheetId = window.CONFIG?.GOOGLE_SHEETS?.SPREADSHEET_ID || '1PcAveY4HB4sAu-alSXaGArkqErY1Xa5J2VKZlM52xHs';
+                this.isInitialized = true; // Marca como inicializado para usar backend
+                console.log('📊 ID da planilha padrão (V1):', this.spreadsheetId);
+                return;
+            }
+
+            // Em desenvolvimento local, tenta carregar credentials.json
             const response = await fetch('credentials.json');
             if (!response.ok) {
                 throw new Error('Não foi possível carregar credentials.json');
@@ -386,9 +396,23 @@ class GoogleSheetsManager {
     }
 
     async initializeService() {
-        if (!this.credentials || !this.spreadsheetId) {
+        if (!this.spreadsheetId) {
             console.warn('⚠️ Google Sheets não configurado');
             return false;
+        }
+
+        // Em produção, se já está inicializado, retorna true
+        if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1' && this.isInitialized) {
+            console.log('✅ Google Sheets já inicializado em produção');
+            return true;
+        }
+
+        // Em desenvolvimento local, verifica credenciais
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+            if (!this.credentials) {
+                console.warn('⚠️ Google Sheets não configurado (desenvolvimento local)');
+                return false;
+            }
         }
 
         try {
@@ -492,7 +516,20 @@ class GoogleSheetsManager {
     }
 
     getStatus() {
-        if (!this.credentials || !this.spreadsheetId) {
+        if (!this.spreadsheetId) {
+            return 'Não configurado';
+        }
+        
+        // Em produção, se está inicializado, está conectado via backend
+        if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+            if (this.isInitialized) {
+                return 'Conectado via Backend';
+            }
+            return 'Verificando...';
+        }
+        
+        // Em desenvolvimento local
+        if (!this.credentials) {
             return 'Não configurado';
         }
         if (!this.isInitialized) {
@@ -568,7 +605,9 @@ async function checkBackendAndInitialize() {
             showNotification('Backend conectado com sucesso!', 'success');
             
             setTimeout(async () => {
-                if (gameState.sheetsManager.credentials) {
+                // Em produção, sempre inicializa (não precisa de credenciais)
+                // Em desenvolvimento local, só inicializa se tiver credenciais
+                if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1' || gameState.sheetsManager.credentials) {
                     console.log('🔄 Inicializando Google Sheets automaticamente...');
                     await initializeGoogleSheets();
                 }
