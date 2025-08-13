@@ -1,0 +1,11 @@
+node_modules/
+*.log
+.env
+.env.local
+.DS_Store
+.git/
+.gitignore
+README.md
+*.md
+deploy-*.sh
+render.yaml

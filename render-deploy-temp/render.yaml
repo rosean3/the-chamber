@@ -1,0 +1,39 @@
+services:
+  # Backend API
+  - type: web
+    name: the-chamber-backend
+    env: node
+    plan: free
+    buildCommand: cd the-chamber-backend && npm install
+    startCommand: cd the-chamber-backend && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: SPREADSHEET_ID_V1
+        sync: false
+      - key: SPREADSHEET_ID_V2
+        sync: false
+      - key: GOOGLE_APPLICATION_CREDENTIALS_JSON
+        sync: false
+      - key: CORS_ORIGIN
+        value: "*"
+    healthCheckPath: /api/status
+    autoDeploy: true
+
+  # Frontend Static Site
+  - type: web
+    name: the-chamber-frontend
+    env: static
+    plan: free
+    buildCommand: echo "Frontend estático - sem build necessário"
+    startCommand: npx serve -s . -l 10000
+    envVars:
+      - key: NODE_ENV
+        value: production
+    routes:
+      - type: rewrite
+        source: /api/*
+        destination: https://the-chamber-backend.onrender.com/api/*
+    autoDeploy: true 

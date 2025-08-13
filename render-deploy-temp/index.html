@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Chamber - Experimento Individual</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="app">
+        <!-- Tela de Seleção de Versão -->
+        <div id="version-selection-screen" class="screen active">
+            <div class="container">
+                <h1 class="title">THE CHAMBER</h1>
+                <div class="version-selection-text">
+                    <p>Escolha a versão do experimento que deseja participar:</p>
+                </div>
+                
+                <div class="version-buttons">
+                    <button id="version-1-btn" class="btn btn-primary version-btn">
+                        <div class="version-title">VERSÃO 1</div>
+                    </button>
+                    
+                    <button id="version-2-btn" class="btn btn-secondary version-btn">
+                        <div class="version-title">VERSÃO 2</div>
+                    </button>
+                </div>
+            
+            </div>
+        </div>
+
+        <!-- Tela de Introdução -->
+        <div id="intro-screen" class="screen">
+            <div class="container">
+                <h1 class="title">THE CHAMBER</h1>
+                <div class="version-indicator">
+                    <span id="current-version-display">VERSÃO 1</span>
+                </div>
+                <div class="intro-text">
+                    <p>Bem-vindo. Você está prestes a participar de um experimento social sobre tomada de decisão e julgamento sob incerteza.</p>
+                    <p>A cada rodada, um novo fragmento de informação sobre um caso será revelado. Seu papel é julgar o suspeito com base nas evidências apresentadas.</p>
+                    <p>Suas decisões são anônimas e essenciais para a pesquisa. Obrigado por participar.</p>
+                </div>
+                <button id="start-btn" class="btn btn-primary">INICIAR EXPERIMENTO</button>
+            </div>
+        </div>
+
+        <!-- Tela de Demografia -->
+        <div id="demographics-screen" class="screen">
+            <div class="container">
+                <h1 class="title">DADOS DO PARTICIPANTE</h1>
+                
+                <div class="form-group">
+                    <label for="age-input">Qual sua idade?</label>
+                    <input type="number" id="age-input" class="form-input" min="1" max="120" placeholder="Digite sua idade">
+                </div>
+
+                <div class="form-group">
+                    <label>Você é:</label>
+                    <div class="button-grid">
+                        <button class="btn btn-choice" data-gender="Mulher cis">Mulher cis</button>
+                        <button class="btn btn-choice" data-gender="Homem cis">Homem cis</button>
+                        <button class="btn btn-choice" data-gender="Não binário">Não binário</button>
+                        <button class="btn btn-choice" data-gender="Mulher trans">Mulher trans</button>
+                        <button class="btn btn-choice" data-gender="Homem trans">Homem trans</button>
+                        <button class="btn btn-choice" data-gender="Outro">Outro</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Qual seu nível de familiaridade com jogos morais? (1-5)</label>
+                    <div class="button-grid">
+                        <button class="btn btn-choice" data-experience="1">1</button>
+                        <button class="btn btn-choice" data-experience="2">2</button>
+                        <button class="btn btn-choice" data-experience="3">3</button>
+                        <button class="btn btn-choice" data-experience="4">4</button>
+                        <button class="btn btn-choice" data-experience="5">5</button>
+                    </div>
+                </div>
+
+                <button id="confirm-demographics-btn" class="btn btn-primary" disabled>CONFIRMAR</button>
+            </div>
+        </div>
+
+        <!-- Tela de Votação -->
+        <div id="voting-screen" class="screen">
+            <div class="container">
+                <div class="voting-header">
+                    <h2 id="round-title">RODADA 1 DE 6</h2>
+                    <div id="case-info" class="case-info"></div>
+                </div>
+
+                <div class="fragment-container">
+                    <div id="fragments-content" class="fragments-content"></div>
+                </div>
+
+                <div class="voting-buttons">
+                    <button id="culpado-btn" class="btn btn-danger">CULPADO</button>
+                    <button id="inocente-btn" class="btn btn-success">INOCENTE</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tela de Revelação Final -->
+        <div id="final-screen" class="screen">
+            <div class="container">
+                <h1 class="title">REVELAÇÃO FINAL</h1>
+                <div id="case-story" class="case-story"></div>
+                <div id="final-verdict" class="final-verdict"></div>
+                <button id="next-case-btn" class="btn btn-primary">PRÓXIMO CASO</button>
+            </div>
+        </div>
+
+        <!-- Tela de Finalização -->
+        <div id="completion-screen" class="screen">
+            <div class="container">
+                <h1 class="title">EXPERIMENTO CONCLUÍDO</h1>
+                <div class="completion-text">
+                    <p>Obrigado por participar do experimento The Chamber!</p>
+                    <p>Seus dados foram coletados e analisados com sucesso.</p>
+                    <p>Você pode fechar esta janela.</p>
+                </div>
+                <div id="download-section" class="download-section">
+                    <button id="download-csv-btn" class="btn btn-secondary">DOWNLOAD DOS DADOS (CSV)</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay hidden">
+        <div class="loading-spinner"></div>
+        <p>Processando dados...</p>
+    </div>
+
+    <!-- Google Sheets Configuration Modal -->
+    <div id="sheets-modal" class="modal hidden">
+        <div class="modal-content">
+            <h3>Configuração do Google Sheets</h3>
+            <p>Para integrar com Google Sheets, configure suas credenciais:</p>
+            <div class="form-group">
+                <label for="sheets-credentials">Credenciais JSON:</label>
+                <textarea id="sheets-credentials" class="form-textarea" placeholder="Cole aqui o conteúdo do arquivo de credenciais JSON"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="spreadsheet-id">ID da Planilha:</label>
+                <input type="text" id="spreadsheet-id" class="form-input" placeholder="ID da planilha do Google Sheets">
+            </div>
+            <div class="modal-buttons">
+                <button id="save-sheets-config" class="btn btn-primary">Salvar</button>
+                <button id="cancel-sheets-config" class="btn btn-secondary">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Status do Google Sheets -->
+    <div id="google-sheets-status" class="google-sheets-status">
+        📊 Google Sheets: <span id="sheets-status-text">Verificando...</span>
+    </div>
+
+    <!-- Botão de configuração do Google Sheets -->
+    <button id="configure-sheets-btn" class="configure-sheets-btn" onclick="showModal('sheets-modal')">
+        ⚙️ Configurar Google Sheets
+    </button>
+
+    <script src="config.js"></script>
+    <script src="script.js"></script>
+</body>
+</html> 

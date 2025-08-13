@@ -1,0 +1,11 @@
+{
+  "name": "the-chamber-frontend",
+  "version": "1.0.0",
+  "description": "Frontend do The Chamber - Experimento Individual",
+  "scripts": {
+    "start": "npx serve -s . -l 10000"
+  },
+  "dependencies": {
+    "serve": "^14.2.0"
+  }
+}

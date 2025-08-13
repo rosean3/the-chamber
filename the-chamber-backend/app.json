@@ -1,0 +1,45 @@
+{
+  "name": "the-chamber-backend",
+  "description": "Backend API para The Chamber - Experimento Individual",
+  "repository": "https://github.com/seu-usuario/the-chamber",
+  "logo": "https://node-js-sample.herokuapp.com/node.png",
+  "keywords": ["node", "express", "google-sheets", "experiment"],
+  "env": {
+    "NODE_ENV": {
+      "description": "Ambiente de execução",
+      "value": "production"
+    },
+    "PORT": {
+      "description": "Porta do servidor",
+      "value": "3000"
+    },
+    "SPREADSHEET_ID_V1": {
+      "description": "ID da planilha V1 (Google Sheets)",
+      "value": "1PcAveY4HB4sAu-alSXaGArkqErY1Xa5J2VKZlM52xHs"
+    },
+    "SPREADSHEET_ID_V2": {
+      "description": "ID da planilha V2 (Google Sheets)",
+      "value": "1iEZZ6iUJqmyp8FDGZXw4nX_Q_1XQJWFmH1q3S0LenOg"
+    },
+    "CORS_ORIGIN": {
+      "description": "Origem permitida para CORS",
+      "value": "*"
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "basic"
+    }
+  },
+  "addons": [
+    {
+      "plan": "heroku-redis:hobby-dev"
+    }
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    }
+  ]
+} 
