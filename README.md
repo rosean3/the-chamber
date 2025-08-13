@@ -1,157 +1,173 @@
-# The Chamber - Plataforma para Experimento de Julgamento Moral
+# The Chamber - Experimento Individual
 
-`The Chamber` é uma plataforma de coleta de dados desenvolvida em **Pygame**, projetada para servir como ferramenta em experimentos de psicologia e ciências comportamentais. O foco do projeto é investigar como o julgamento moral e a tomada de decisão são influenciados pela divulgação gradual de informações.
+Uma aplicação web para experimentos sociais sobre tomada de decisão e julgamento sob incerteza.
 
-## O Experimento
+## 🎯 Sobre o Projeto
 
-### Hipótese / Questão Central
-O objetivo do estudo é analisar como os indivíduos formam e potencialmente alteram seus julgamentos sobre uma situação eticamente complexa à medida que novos fragmentos de evidência são apresentados. A pesquisa busca responder a perguntas como:
+The Chamber é um experimento psicológico onde participantes julgam suspeitos com base em fragmentos de informação revelados progressivamente. O experimento coleta dados sobre:
 
-* Com que rapidez as pessoas formam um julgamento inicial?
-* Quão suscetíveis são esses julgamentos a mudanças quando confrontados com novas informações que podem contradizer ou contextualizar as anteriores?
-* Existem variáveis demográficas (idade, gênero) ou de experiência que se correlacionam com a flexibilidade ou rigidez do julgamento?
+- Tempo de decisão
+- Mudanças de voto
+- Características demográficas dos participantes
+- Resultados das decisões
 
-### Metodologia e Coleta de Dados
-O fluxo do jogo foi desenhado para isolar e registrar as variáveis de interesse de forma sistemática.
+## ✨ Funcionalidades
 
-1.  **Dados Demográficos:** Ao iniciar, a plataforma coleta dados básicos do participante: idade, gênero e nível de familiaridade auto-declarado com jogos de dilema moral. Cada sessão de jogo recebe um ID único (`ID_Sessao`).
+- **Interface moderna e responsiva** - Funciona em desktop e mobile
+- **Sistema de telas** - Introdução, demografia, votação, revelação final
+- **10 casos diferentes** - Mistura de histórias reais e fictícias
+- **6 rodadas por caso** - Informação revelada progressivamente
+- **Coleta de dados** - Exportação CSV e integração Google Sheets
+- **Design cyberpunk** - Interface visual inspirada no jogo original
 
-2.  **Apresentação do Caso:** Um caso (história com um suspeito) é selecionado aleatoriamente do banco de casos (`CASE_POOL`), garantindo que os participantes enfrentem cenários diferentes.
+## 🚀 Deploy Rápido
 
-3.  **Julgamento Incremental (6 Rodadas):** A história não é revelada de uma só vez. Ela é dividida em **seis fragmentos**. O experimento ocorre em seis rodadas:
-    * **Rodada 1:** O primeiro fragmento é apresentado. O participante vota em **"Culpado"** ou **"Inocente"**.
-    * **Rodada 2:** O segundo fragmento é adicionado ao primeiro. O participante vota novamente, agora com mais contexto.
-    * **... e assim por diante, até a Rodada 6**, onde todos os seis fragmentos estão visíveis.
-
-4.  **Variáveis Coletadas por Rodada:** Para cada um dos seis votos, o sistema registra:
-    * `Decisao_Final`: O voto do participante (0 para Inocente, 1 para Culpado).
-    * `Tempo_de_Decisao_s`: O tempo em segundos que o participante levou para decidir.
-    * `Mudanca_de_Voto`: Um indicador (1 para sim, 0 para não) se o voto da rodada atual é diferente do voto da rodada anterior.
-
-5.  **Revelação Final:** Após a sexta e última votação, a plataforma revela a história completa e o desfecho real do caso, mostrando se o suspeito era, de fato, culpado ou inocente.
-
-### Estrutura do Arquivo de Saída
-Ao final de cada sessão completa (as 6 rodadas), os dados coletados são automaticamente salvos em um arquivo chamado `resultados_experimento.csv`. Se o arquivo não existir, ele será criado com um cabeçalho. Os dados de novas sessões são adicionados ao final do arquivo, permitindo a coleta contínua.
-
-As colunas salvas no arquivo CSV são:
-
-| Cabeçalho               | Descrição                                                          |
-| :---------------------- | :----------------------------------------------------------------- |
-| `ID_Sessao`             | Identificador único para a sessão de jogo.                         |
-| `ID_Participante`       | Identificador do participante (fixado como P1 no código atual).    |
-| `Num_Rodada`            | O número da rodada de votação (de 1 a 6).                          |
-| `Idade`                 | Idade do participante.                                             |
-| `Genero_Participante`   | Gênero declarado pelo participante.                                |
-| `Experiencia_com_Jogos` | Nível de familiaridade com jogos morais (1-5).                     |
-| `ID_Caso`               | Identificador do caso que foi jogado.                              |
-| `Tipo_de_Historia`      | Se o caso é baseado em fatos reais ou fictício.                    |
-| `Genero_Suspeito`       | Gênero do suspeito no caso.                                        |
-| `Tempo_de_Decisao_s`    | Tempo de decisão do participante em segundos.                      |
-| `Decisao_Final`         | Voto do participante (0 = Inocente, 1 = Culpado).                  |
-| `Mudanca_de_Voto`       | Se o voto mudou em relação à rodada anterior (0 = Não, 1 = Sim).   |
-| `Resultado_Real_Caso`   | O desfecho verdadeiro do caso (0 = Inocente, 1 = Culpado).         |
-| `Num_Jogadores_Sessao`  | Número de jogadores (fixado em 1 no código atual).                 |
-
-## Como Executar a Plataforma
-
-Siga os passos abaixo para executar o experimento em sua máquina.
-
-#### Pré-requisitos
-* Python 3.x instalado.
-
-### Instalação
-
-1.  Clone este repositório para a sua máquina local:
-    ```bash
-    git clone [https://github.com/laysearaujo/the_chamber.git](https://github.com/laysearaujo/the_chamber.git)
-    cd the_chamber
-    ```
-
-2.  (Recomendado) Crie e ative um ambiente virtual para isolar as dependências do projeto:
-    * No macOS/Linux:
-        ```bash
-        python3 -m venv venv
-        source venv/bin/activate
-        ```
-    * No Windows:
-        ```bash
-        python -m venv venv
-        venv\Scripts\activate
-        ```
-
-3.  Instale a biblioteca Pygame. Crie um arquivo chamado `requirements.txt` na pasta do projeto, adicione o conteúdo abaixo a ele, e depois execute o comando de instalação.
-
-    Conteúdo para `requirements.txt`:
-    ```
-    pygame
-    ```
-
-    Comando para instalar:
-    ```bash
-    pip install -r requirements.txt
-    ```
-
-### Execução
-
-Com o ambiente virtual ativado e as dependências instaladas, execute o arquivo principal:
+### Opção 1: Deploy Local (Desenvolvimento)
 
 ```bash
-python the_chamber.py
+# Clone o repositório
+git clone https://github.com/seu-usuario/the-chamber.git
+cd the-chamber
+
+# Inicie um servidor local
+python -m http.server 8000
+
+# Abra no navegador
+open http://localhost:8000
 ```
 
-## 📊 Integração com Google Sheets
+### Opção 2: Deploy no GitHub Pages
 
-O projeto agora inclui integração opcional com Google Sheets para salvar automaticamente os dados do experimento na nuvem.
+1. **Crie um repositório no GitHub**
+2. **Faça upload dos arquivos:**
+   - `index.html`
+   - `styles.css`
+   - `script.js`
+   - `package.json`
+   - `README.md`
 
-### Funcionalidades
+3. **Ative o GitHub Pages:**
+   - Vá em Settings > Pages
+   - Source: Deploy from a branch
+   - Branch: main
+   - Folder: / (root)
 
-- **Salvamento Duplo**: Os dados são salvos tanto localmente (CSV) quanto no Google Sheets
-- **Backup Automático**: Se houver falha no Google Sheets, os dados locais servem como backup
-- **Tempo Real**: A planilha é atualizada automaticamente durante o experimento
-- **Configuração Simples**: Setup guiado com instruções detalhadas
+4. **Acesse:** `https://seu-usuario.github.io/the-chamber`
 
-### Versões Disponíveis
+### Opção 3: Deploy no Netlify
 
-#### Versão 1 (`the_chamber.py`)
-- **Planilha ID**: `1PcAveY4HB4sAu-alSXaGArkqErY1Xa5J2VKZlM52xHs`
-- **Arquivo de saída**: `resultados_experimento.csv`
-- **Versão do experimento**: 1
+1. **Conecte seu repositório GitHub ao Netlify**
+2. **Configure o build:**
+   - Build command: `echo "Build não necessário"`
+   - Publish directory: `.`
+3. **Deploy automático a cada push**
 
-#### Versão 2 (`the_chamber_v2.py`)
-- **Planilha ID**: `1iEZZ6iUJqmyp8FDGZXw4nX_Q_1XQJWFmH1q3S0LenOg`
-- **Arquivo de saída**: `resultados_experimento_v2.csv`
-- **Versão do experimento**: 2
+### Opção 4: Deploy no Vercel
 
-### Configuração Rápida
+1. **Conecte seu repositório ao Vercel**
+2. **Configure como projeto estático**
+3. **Deploy automático**
 
-1. **Instalar dependências adicionais**:
-   ```bash
-   pip install -r requirements.txt
-   ```
+## 🔧 Configuração do Google Sheets
 
-2. **Seguir o guia de configuração**:
-   - Leia `SETUP_GOOGLE_SHEETS.md` para instruções detalhadas
-   - Configure as credenciais do Google Cloud
-   - Crie e compartilhe as planilhas
+Para integrar com Google Sheets:
 
-3. **Testar a integração**:
-   ```bash
-   # Para versão 1
-   python test_google_sheets.py
-   
-   # Para versão 2
-   python test_google_sheets_v2.py
-   ```
+1. **Crie um projeto no Google Cloud Console**
+2. **Ative a Google Sheets API**
+3. **Crie credenciais de conta de serviço**
+4. **Baixe o arquivo JSON de credenciais**
+5. **Compartilhe sua planilha com o email da conta de serviço**
+6. **Configure no jogo:**
+   - Clique em "Configurar Google Sheets"
+   - Cole as credenciais JSON
+   - Digite o ID da planilha
 
-4. **Executar o experimento**:
-   ```bash
-   # Para versão 1
-   python the_chamber.py
-   
-   # Para versão 2
-   python the_chamber_v2.py
-   ```
+## 📁 Estrutura do Projeto
 
-### Estrutura dos Dados
+```
+the-chamber/
+├── index.html          # Interface principal
+├── styles.css          # Estilos CSS
+├── script.js           # Lógica do jogo
+├── package.json        # Configuração do projeto
+├── README.md           # Este arquivo
+└── DEPLOYMENT.md       # Guia detalhado de deploy
+```
 
-Os dados são organizados automaticamente na planilha com as mesmas colunas do arquivo CSV local, permitindo análise em tempo real e colaboração remota.
+## 🎮 Como Jogar
+
+1. **Introdução** - Leia as instruções
+2. **Demografia** - Preencha idade, gênero e experiência
+3. **Votação** - Em 6 rodadas, julgue o suspeito
+4. **Revelação** - Descubra a verdade sobre o caso
+5. **Próximo Caso** - Continue com outros casos
+6. **Conclusão** - Download dos dados coletados
+
+## 📊 Dados Coletados
+
+O experimento coleta:
+
+- **ID da sessão e participante**
+- **Dados demográficos** (idade, gênero, experiência)
+- **Informações do caso** (ID, tipo, gênero do suspeito)
+- **Decisões** (voto, tempo, mudança de voto)
+- **Resultado real** do caso
+
+## 🌐 Compatibilidade
+
+- ✅ Chrome 80+
+- ✅ Firefox 75+
+- ✅ Safari 13+
+- ✅ Edge 80+
+- ✅ Mobile browsers
+
+## 🔒 Privacidade
+
+- **Dados anônimos** - Não há identificação pessoal
+- **Armazenamento local** - Dados ficam no navegador
+- **Google Sheets opcional** - Integração configurável
+- **Exportação segura** - Download local dos dados
+
+## 🛠️ Desenvolvimento
+
+### Pré-requisitos
+- Navegador moderno
+- Servidor HTTP local (para desenvolvimento)
+- Git (para versionamento)
+
+### Estrutura do Código
+- **HTML**: Estrutura das telas
+- **CSS**: Estilos e animações
+- **JavaScript**: Lógica do jogo e gerenciamento de estado
+
+### Personalização
+- **Cores**: Edite as variáveis CSS em `styles.css`
+- **Casos**: Modifique o array `CASE_POOL` em `script.js`
+- **Rodadas**: Altere `MAX_ROUNDS` em `script.js`
+
+## 📝 Licença
+
+MIT License - veja o arquivo LICENSE para detalhes.
+
+## 🤝 Contribuição
+
+1. Fork o projeto
+2. Crie uma branch para sua feature
+3. Commit suas mudanças
+4. Push para a branch
+5. Abra um Pull Request
+
+## 📞 Suporte
+
+- **Issues**: [GitHub Issues](https://github.com/seu-usuario/the-chamber/issues)
+- **Email**: seu-email@exemplo.com
+- **Documentação**: [Wiki do projeto](https://github.com/seu-usuario/the-chamber/wiki)
+
+## 🔄 Atualizações
+
+- **v1.0.0** - Versão inicial com todas as funcionalidades
+- **Próximas** - Melhorias de UI/UX e novos casos
+
+---
+
+**The Chamber** - Transformando experimentos psicológicos em experiências digitais interativas.

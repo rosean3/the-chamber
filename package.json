@@ -1,0 +1,31 @@
+{
+  "name": "the-chamber",
+  "version": "1.0.0",
+  "description": "The Chamber - Experimento Individual de Tomada de Decisão",
+  "main": "index.html",
+  "scripts": {
+    "start": "python -m http.server 8000",
+    "dev": "python -m http.server 8000",
+    "build": "echo 'Build não necessário para aplicação estática'",
+    "deploy": "echo 'Deploy manual - veja README.md'"
+  },
+  "keywords": [
+    "experimento",
+    "psicologia",
+    "tomada-decisao",
+    "jogo-moral",
+    "pesquisa"
+  ],
+  "author": "The Chamber Team",
+  "license": "MIT",
+  "devDependencies": {},
+  "dependencies": {},
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/seu-usuario/the-chamber.git"
+  },
+  "homepage": "https://seu-usuario.github.io/the-chamber"
+} 

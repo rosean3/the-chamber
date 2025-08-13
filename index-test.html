@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Chamber - Experimento Individual</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="app">
+        <!-- Tela de Seleção de Versão -->
+        <div id="version-selection-screen" class="screen active">
+            <div class="container">
+                <h1 class="title">THE CHAMBER</h1>
+                <div class="version-selection-text">
+                    <p>Escolha a versão do experimento que deseja participar:</p>
+                </div>
+                
+                <div class="version-buttons">
+                    <button id="version-1-btn" class="btn btn-primary version-btn">
+                        <div class="version-title">VERSÃO 1</div>
+                        <div class="version-description">
+                            Casos originais com gênero variado
+                        </div>
+                    </button>
+                    
+                    <button id="version-2-btn" class="btn btn-secondary version-btn">
+                        <div class="version-title">VERSÃO 2</div>
+                        <div class="version-description">
+                            Casos atualizados com foco em gênero masculino
+                        </div>
+                    </button>
+                </div>
+                
+                <div class="version-info">
+                    <div class="info-box">
+                        <h3>📊 Sobre as Versões</h3>
+                        <p><strong>V1:</strong> Casos originais com distribuição equilibrada de gêneros</p>
+                        <p><strong>V2:</strong> Casos atualizados com foco em suspeitos masculinos</p>
+                        <p>Ambas as versões têm a mesma estrutura e número de rodadas.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tela de Introdução -->
+        <div id="intro-screen" class="screen">
+            <div class="container">
+                <h1 class="title">THE CHAMBER</h1>
+                <div class="version-indicator">
+                    <span id="current-version-display">VERSÃO 1</span>
+                </div>
+                <div class="intro-text">
+                    <p>Bem-vindo. Você está prestes a participar de um experimento social sobre tomada de decisão e julgamento sob incerteza.</p>
+                    <p>A cada rodada, um novo fragmento de informação sobre um caso será revelado. Seu papel é julgar o suspeito com base nas evidências apresentadas.</p>
+                    <p>Suas decisões são anônimas e essenciais para a pesquisa. Obrigado por participar.</p>
+                </div>
+                <button id="start-btn" class="btn btn-primary">INICIAR EXPERIMENTO</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Status do Google Sheets -->
+    <div id="google-sheets-status" class="google-sheets-status">
+        📊 Google Sheets: <span id="sheets-status-text">Verificando...</span>
+    </div>
+
+    <!-- Botão de configuração do Google Sheets -->
+    <button id="configure-sheets-btn" class="configure-sheets-btn" onclick="showModal('sheets-modal')">
+        ⚙️ Configurar Google Sheets
+    </button>
+
+    <script src="config.js"></script>
+    <script src="script.js"></script>
+    
+    <!-- Script de teste adicional -->
+    <script>
+        console.log('🧪 Script de teste carregado');
+        
+        // Verifica se os elementos estão sendo encontrados
+        setTimeout(() => {
+            console.log('🔍 Verificando elementos após carregamento...');
+            
+            const version1Btn = document.getElementById('version-1-btn');
+            const version2Btn = document.getElementById('version-2-btn');
+            
+            console.log('Botão V1:', version1Btn);
+            console.log('Botão V2:', version2Btn);
+            
+            if (version1Btn) {
+                console.log('✅ Botão V1 encontrado');
+                version1Btn.addEventListener('click', () => {
+                    console.log('🎯 VERSÃO 1 CLICADA!');
+                    alert('Versão 1 selecionada!');
+                });
+            }
+            
+            if (version2Btn) {
+                console.log('✅ Botão V2 encontrado');
+                version2Btn.addEventListener('click', () => {
+                    console.log('🎯 VERSÃO 2 CLICADA!');
+                    alert('Versão 2 selecionada!');
+                });
+            }
+        }, 1000);
+    </script>
+</body>
+</html> 

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste The Chamber</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .btn { padding: 10px 20px; margin: 10px; font-size: 16px; cursor: pointer; }
+        .btn-primary { background: #00c8ff; color: white; border: none; border-radius: 5px; }
+        .btn-secondary { background: #666; color: white; border: none; border-radius: 5px; }
+        #log { background: #f0f0f0; padding: 10px; margin: 20px 0; border-radius: 5px; font-family: monospace; }
+    </style>
+</head>
+<body>
+    <h1>Teste The Chamber - Event Listeners</h1>
+    
+    <div>
+        <button id="version-1-btn" class="btn btn-primary">VERSÃO 1</button>
+        <button id="version-2-btn" class="btn btn-secondary">VERSÃO 2</button>
+    </div>
+    
+    <div id="log"></div>
+    
+    <script>
+        function log(message) {
+            const logDiv = document.getElementById('log');
+            logDiv.innerHTML += new Date().toLocaleTimeString() + ': ' + message + '<br>';
+        }
+        
+        log('Página carregada');
+        
+        // Teste dos event listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            log('DOM carregado');
+            
+            const version1Btn = document.getElementById('version-1-btn');
+            const version2Btn = document.getElementById('version-2-btn');
+            
+            if (version1Btn) {
+                version1Btn.addEventListener('click', () => {
+                    log('🎯 Versão 1 clicada!');
+                });
+                log('✅ Event listener V1 configurado');
+            } else {
+                log('❌ Botão V1 não encontrado');
+            }
+            
+            if (version2Btn) {
+                version2Btn.addEventListener('click', () => {
+                    log('🎯 Versão 2 clicada!');
+                });
+                log('✅ Event listener V2 configurado');
+            } else {
+                log('❌ Botão V2 não encontrado');
+            }
+        });
+    </script>
+</body>
+</html> 

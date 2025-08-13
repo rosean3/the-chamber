@@ -1,7 +1,545 @@
-/jogo
-/env
-/venv
-.jogo
-.env
-.venv
+# 🚀 The Chamber - .gitignore
+
+# ========================================
+# 🔐 CREDENCIAIS E SEGURANÇA
+# ========================================
+# NUNCA commite credenciais!
 credentials.json
+*.key
+*.pem
+*.p12
+*.pfx
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+env.config
+secrets/
+secrets.json
+google-credentials/
+service-account-*.json
+
+# ========================================
+# 📦 DEPENDÊNCIAS
+# ========================================
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# ========================================
+# 🗄️ BANCO DE DADOS E ARQUIVOS DE DADOS
+# ========================================
+# Dados do experimento
+*.csv
+*.xlsx
+*.xls
+resultados_experimento.csv
+dados_experimento/
+experiment_data/
+participant_data/
+
+# Google Sheets
+sheets_cache/
+sheets_backup/
+*.sheets
+
+# ========================================
+# 💻 SISTEMA OPERACIONAL
+# ========================================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.tmp
+*.temp
+Desktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# ========================================
+# 🔧 IDEs E EDITORES
+# ========================================
+# Visual Studio Code
+.vscode/
+*.code-workspace
+.history/
+
+# JetBrains IDEs
+.idea/
+*.iml
+*.ipr
+*.iws
+.idea_modules/
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+*.swp
+*.swo
+*~
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
+# ========================================
+# 🐍 PYTHON ESPECÍFICO
+# ========================================
+# Virtual environments
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+.venv/
+.env/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb
+
+# PyCharm
+.idea/
+
+# pytest
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+
+# ========================================
+# 🟢 NODE.JS ESPECÍFICO
+# ========================================
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+*.lcov
+
+# nyc test coverage
+.nyc_output
+
+# Grunt intermediate storage
+.grunt
+
+# Bower dependency directory
+bower_components
+
+# node-waf configuration
+.lock-wscript
+
+# Compiled binary addons
+build/Release
+
+# Dependency directories
+jspm_packages/
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Optional stylelint cache
+.stylelintcache
+
+# Microbundle cache
+.rpt2_cache/
+.rts2_cache_cjs/
+.rts2_cache_es/
+.rts2_cache_umd/
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# dotenv environment variable files
+.env.development.local
+.env.test.local
+.env.production.local
+.env.local
+
+# parcel-bundler cache
+.cache
+.parcel-cache
+
+# Next.js build output
+.next
+out
+
+# Nuxt.js build / generate output
+.nuxt
+dist
+
+# Gatsby files
+.cache/
+public
+
+# Storybook build outputs
+.out
+.storybook-out
+storybook-static
+
+# Temporary folders
+tmp/
+temp/
+
+# ========================================
+# 🚀 DEPLOYMENT E BUILD
+# ========================================
+# Build outputs
+dist/
+build/
+out/
+.next/
+.nuxt/
+
+# Deployment
+.deploy/
+.deployment/
+.vercel/
+.netlify/
+
+# ========================================
+# 📊 LOGS E MONITORAMENTO
+# ========================================
+# Logs
+*.log
+logs/
+log/
+
+# Analytics
+analytics/
+stats/
+metrics/
+
+# ========================================
+# 🧪 TESTES E QUALIDADE
+# ========================================
+# Test coverage
+coverage/
+.nyc_output/
+.coverage
+htmlcov/
+
+# Test results
+test-results/
+junit.xml
+test-report.xml
+
+# ========================================
+# 🔍 DEBUG E DESENVOLVIMENTO
+# ========================================
+# Debug files
+*.debug
+debug/
+.debug/
+
+# Development files
+dev/
+development/
+staging/
+
+# ========================================
+# 📁 ARQUIVOS TEMPORÁRIOS
+# ========================================
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# Cache directories
+.cache/
+cache/
+tmp/
+temp/
+
+# ========================================
+# 🎯 ARQUIVOS ESPECÍFICOS DO PROJETO
+# ========================================
+# Dados do experimento
+experiment_results/
+participant_data/
+session_data/
+
+# Backups
+backup/
+*.backup
+*.bak
+
+# Configurações locais
+local.config.js
+local.config.json
+config.local.js
+
+# ========================================
+# 📝 DOCUMENTAÇÃO TEMPORÁRIA
+# ========================================
+# Arquivos de documentação temporários
+docs/temp/
+*.draft
+*.work-in-progress
+
+# ========================================
+# 🚨 ARQUIVOS DE SEGURANÇA
+# ========================================
+# Certificados SSL
+*.crt
+*.csr
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Chaves SSH
+id_rsa
+id_rsa.pub
+id_ed25519
+id_ed25519.pub
+
+# ========================================
+# 💾 ARQUIVOS DE SISTEMA
+# ========================================
+# Arquivos de sistema
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# ========================================
+# 🎮 ARQUIVOS ESPECÍFICOS DO JOGO
+# ========================================
+# Dados de sessão
+session_data/
+game_saves/
+player_progress/
+
+# Logs do jogo
+game_logs/
+debug_logs/
+error_logs/
+
+# ========================================
+# 📊 GOOGLE SHEETS ESPECÍFICO
+# ========================================
+# Cache do Google Sheets
+sheets_cache/
+sheets_backup/
+*.sheets
+
+# Dados exportados
+exported_data/
+downloaded_sheets/
+
+# ========================================
+# 🔄 VERSIONAMENTO
+# ========================================
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# SVN
+.svn/
+
+# Mercurial
+.hg/
+
+# ========================================
+# 📱 MOBILE E APPS
+# ========================================
+# React Native
+.expo/
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.orig.*
+web-build/
+
+# ========================================
+# ☁️ CLOUD E SERVIÇOS
+# ========================================
+# AWS
+.aws/
+aws-credentials
+
+# Google Cloud
+.gcloud/
+gcloud-credentials
+
+# Azure
+.azure/
+azure-credentials
+
+# ========================================
+# 🐳 DOCKER
+# ========================================
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+docker-compose.override.yml
+
+# ========================================
+# 🚀 CI/CD
+# ========================================
+# GitHub Actions
+.github/workflows/
+.github/actions/
+
+# GitLab CI
+.gitlab-ci.yml
+
+# Jenkins
+Jenkinsfile
+.jenkins/
+
+# ========================================
+# 📊 MONITORAMENTO E LOGS
+# ========================================
+# Logs de aplicação
+app.logs/
+application.logs/
+*.log.*
+
+# Métricas
+metrics/
+stats/
+analytics/
+
+# ========================================
+# 🧹 LIMPEZA AUTOMÁTICA
+# ========================================
+# Arquivos que devem ser limpos automaticamente
+*.tmp
+*.temp
+*.cache
+*.log
+*.bak
+*.backup
+
+# ========================================
+# 📋 NOTAS IMPORTANTES
+# ========================================
+# ⚠️  IMPORTANTE: NUNCA commite credenciais!
+# 🔐  Sempre use variáveis de ambiente
+# 📊  Dados sensíveis devem estar no .gitignore
+# 🚀  Mantenha este arquivo atualizado
+
+# ========================================
+# 🎯 EXCEÇÕES (arquivos que DEVEM ser commitados)
+# ========================================
+!package.json
+!package-lock.json
+!requirements.txt
+!README.md
+!LICENSE
+!.gitignore
+!config.example.js
+!config.example.json
+!env.example
+!.env.example
