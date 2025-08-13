@@ -40,6 +40,14 @@ const CONFIG = {
         }
     },
 
+    // Configurações de Backend
+    BACKEND: {
+        LOCAL_URL: 'http://localhost:3000',
+        RENDER_URL: 'https://the-chamber-backend.onrender.com',
+        TIMEOUT: 10000,
+        RETRY_ATTEMPTS: 3
+    },
+
     // Configurações de Google Sheets
     GOOGLE_SHEETS: {
         ENABLED: true,

@@ -294,8 +294,21 @@ class GoogleSheetsManager {
         this.spreadsheetId = null;
         this.credentials = null;
         this.isInitialized = false;
-        this.backendUrl = 'http://localhost:3000';
+        this.backendUrl = this.detectBackendUrl();
         this.loadConfig();
+    }
+
+    // Detecta automaticamente a URL do backend
+    detectBackendUrl() {
+        // Se está rodando em localhost, usa o backend local
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+            console.log('🏠 Ambiente local detectado, usando backend local');
+            return window.CONFIG?.BACKEND?.LOCAL_URL || 'http://localhost:3000';
+        } else {
+            // Se está em produção (Render), usa o backend deployado
+            console.log('☁️ Ambiente de produção detectado, usando backend Render');
+            return window.CONFIG?.BACKEND?.RENDER_URL || 'https://the-chamber-backend.onrender.com';
+        }
     }
 
     async loadConfig() {
@@ -402,7 +415,7 @@ class GoogleSheetsManager {
             }
         } catch (error) {
             console.error('❌ Erro ao inicializar Google Sheets:', error);
-            console.log('💡 Certifique-se de que o backend está rodando em http://localhost:3000');
+            console.log('💡 Certifique-se de que o backend está rodando em', this.backendUrl);
             return false;
         }
     }
