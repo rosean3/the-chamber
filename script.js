@@ -427,7 +427,17 @@ class GoogleSheetsManager {
                 if (statusData.success && statusData.status === 'connected') {
                     this.isInitialized = true;
                     console.log('✅ Google Sheets inicializado com sucesso via backend');
-                    console.log('📊 Planilha:', statusData.spreadsheet.title);
+                    // Log das planilhas disponíveis
+                    if (statusData.spreadsheets) {
+                        console.log('📊 Planilhas disponíveis:');
+                        Object.entries(statusData.spreadsheets).forEach(([version, info]) => {
+                            if (info.status === 'connected') {
+                                console.log(`   ${version}: ${info.title} (${info.id})`);
+                            } else {
+                                console.log(`   ${version}: ${info.status} - ${info.error || 'Erro'}`);
+                            }
+                        });
+                    }
                     return true;
                 } else {
                     console.warn('⚠️ Backend conectado mas Google Sheets não disponível');
