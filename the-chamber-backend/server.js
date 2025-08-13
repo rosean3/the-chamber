@@ -24,10 +24,34 @@ const SPREADSHEET_IDS = {
 
 async function initializeGoogleSheets() {
     try {
-        auth = new google.auth.GoogleAuth({
-            keyFile: path.join(__dirname, '../credentials.json'),
-            scopes: ['https://www.googleapis.com/auth/spreadsheets'],
-        });
+        // Em produção (Render), usa variáveis de ambiente
+        // Em desenvolvimento local, usa arquivo credentials.json
+        if (process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON) {
+            console.log('☁️ Usando credenciais das variáveis de ambiente (produção)');
+            
+            // Parse das credenciais JSON da variável de ambiente
+            const credentials = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON);
+            
+            auth = new google.auth.GoogleAuth({
+                credentials: credentials,
+                scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+            });
+        } else {
+            console.log('🏠 Usando arquivo credentials.json (desenvolvimento local)');
+            
+            // Verifica se o arquivo existe
+            const fs = require('fs');
+            const credentialsPath = path.join(__dirname, '../credentials.json');
+            
+            if (!fs.existsSync(credentialsPath)) {
+                throw new Error('Arquivo credentials.json não encontrado. Configure GOOGLE_APPLICATION_CREDENTIALS_JSON em produção.');
+            }
+            
+            auth = new google.auth.GoogleAuth({
+                keyFile: credentialsPath,
+                scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+            });
+        }
 
         sheets = google.sheets({ version: 'v4', auth });
         console.log('✅ Google Sheets inicializado com sucesso');
